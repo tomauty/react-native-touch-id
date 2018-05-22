@@ -38,6 +38,11 @@ public class FingerprintDialog extends DialogFragment
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    //No call for super(). Bug on API Level > 11.
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
