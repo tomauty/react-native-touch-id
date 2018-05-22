@@ -7,6 +7,7 @@ import android.util.Log;
 public class DialogResultHandler implements FingerprintDialog.DialogResultListener {
     private Callback errorCallback;
     private Callback successCallback;
+    private boolean invoked = false;
 
     public DialogResultHandler(Callback reactErrorCallback, Callback reactSuccessCallback) {
       errorCallback = reactErrorCallback;
@@ -16,16 +17,26 @@ public class DialogResultHandler implements FingerprintDialog.DialogResultListen
     @Override
     public void onAuthenticated() {
       FingerprintAuthModule.inProgress = false;
-      successCallback.invoke("Successfully authenticated.");
+      if (!invoked) {
+          successCallback.invoke("Successfully authenticated.");
+          invoked = true;
+      }
     }
     @Override
     public void onError(String errorString) {
       FingerprintAuthModule.inProgress = false;
-      errorCallback.invoke(errorString);
+      if (!invoked) {
+          errorCallback.invoke(errorString);
+          invoked = true;
+      }
     }
     @Override
     public void onCancelled() {
       FingerprintAuthModule.inProgress = false;
-      errorCallback.invoke("cancelled");
+      if (!invoked) {
+          errorCallback.invoke("cancelled");
+          invoked = true;
+      }
     }
 }
+
